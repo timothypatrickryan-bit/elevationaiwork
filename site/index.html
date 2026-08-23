@@ -495,6 +495,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;margin-top:40px}
             <input id="f-company" name="company" type="text" autocomplete="organization">
           </div>
         </div>
+        <div class="hp" aria-hidden="true" style="position:absolute;left:-9999px;height:0;overflow:hidden"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="field">
           <label for="f-email">Work email</label>
           <input id="f-email" name="email" type="email" autocomplete="email" required>
@@ -522,7 +523,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;margin-top:40px}
         </div>
         <div class="actions">
           <button class="btn btn-amber" type="submit">Send project brief</button>
-          <span class="form-note">Opens in your email app &middot; or write us at <a href="mailto:hello@elevationaiwork.com">hello@elevationaiwork.com</a></span>
+          <span class="form-note">Goes straight to our team &middot; or write us at <a href="mailto:hello@elevationaiwork.com">hello@elevationaiwork.com</a></span>
         </div>
         <div class="form-status" id="form-status" role="status"></div>
       </form>
@@ -552,35 +553,43 @@ const obs = new IntersectionObserver((entries)=>{
 },{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// intake form -> structured email to hello@
+// intake form -> POST to intake worker (falls back to mailto)
+const ENDPOINT='https://intake.elevationaiwork.com/';
 const form=document.getElementById('intake');
 const status=document.getElementById('form-status');
-function briefText(fd){
-  const sol=fd.getAll('solution');
-  return [
-    'Name: '+fd.get('name'),
-    'Company: '+(fd.get('company')||'-'),
-    'Email: '+fd.get('email'),
-    'Interested in: '+(sol.length?sol.join('; '):'-'),
-    'Timeline: '+fd.get('timeline'),
-    '',
-    'Problem / desired outcome:',
-    fd.get('problem')
-  ].join('\n');
+const submitBtn=form.querySelector('button[type=submit]');
+function briefData(fd){
+  return {
+    name:fd.get('name'), company:fd.get('company'), email:fd.get('email'),
+    solutions:fd.getAll('solution'), timeline:fd.get('timeline'),
+    problem:fd.get('problem'), website:fd.get('website')||''
+  };
 }
-form.addEventListener('submit',e=>{
+function mailtoFallback(d){
+  const body=['Name: '+d.name,'Company: '+(d.company||'-'),'Email: '+d.email,
+    'Interested in: '+(d.solutions.length?d.solutions.join('; '):'-'),
+    'Timeline: '+d.timeline,'','Problem / desired outcome:',d.problem].join('\n');
+  window.location.href='mailto:hello@elevationaiwork.com?subject='+encodeURIComponent('Project brief \u2014 '+(d.company||d.name))+'&body='+encodeURIComponent(body);
+}
+form.addEventListener('submit',async e=>{
   e.preventDefault();
   if(!form.reportValidity())return;
-  const fd=new FormData(form);
-  const subject='Project brief — '+(fd.get('company')||fd.get('name'));
-  const body=briefText(fd);
-  window.location.href='mailto:hello@elevationaiwork.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-  status.innerHTML='Your email app should open with the brief pre-filled. If it didn\u2019t, <button type="button" id="copy-brief">copy the brief</button> and send it to hello@elevationaiwork.com.';
-  status.classList.add('show');
-  document.getElementById('copy-brief').addEventListener('click',()=>{
-    navigator.clipboard.writeText('To: hello@elevationaiwork.com\nSubject: '+subject+'\n\n'+body)
-      .then(()=>{status.textContent='Brief copied to your clipboard \u2014 paste it into any email to hello@elevationaiwork.com.';});
-  });
+  const d=briefData(new FormData(form));
+  submitBtn.disabled=true;submitBtn.textContent='Sending\u2026';
+  status.classList.remove('show');
+  try{
+    const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    form.reset();
+    submitBtn.textContent='Send project brief';submitBtn.disabled=false;
+    status.textContent='Brief received \u2014 thanks, '+d.name.split(' ')[0]+'. We read every one and reply within one business day.';
+    status.classList.add('show');
+  }catch(err){
+    submitBtn.textContent='Send project brief';submitBtn.disabled=false;
+    status.innerHTML='Couldn\u2019t reach our server \u2014 opening your email app instead. Or write us directly at hello@elevationaiwork.com.';
+    status.classList.add('show');
+    mailtoFallback(d);
+  }
 });
 </script>
 <!-- Cloudflare Web Analytics (cookie-free) -->
