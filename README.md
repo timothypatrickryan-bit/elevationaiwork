@@ -35,8 +35,8 @@ Any other static host works too (Cloudflare Pages, Netlify, S3) — just serve `
 
 ## Open items before going live
 
-- [ ] Confirm contact address (page uses `hello@elevationaiwork.com`; set up the mailbox/forward in Cloudflare Email Routing or Resend).
+- [x] `hello@elevationaiwork.com` forwards via Cloudflare Email Routing → timothy.patrick.ryan@gmail.com.
 - [x] "Request a copy" insight cards open a pre-filled request email (swap for direct PDF links once hosted).
 - [ ] Decide which products should link out publicly (only DC Ops is linked today).
 - [x] OG/Twitter image at `assets/og.png` (1200×630), wired into the meta tags.
-- [ ] Optional: analytics (Cloudflare Web Analytics is one script tag, no cookies).
+- [x] Cloudflare Web Analytics beacon installed (cookie-free; token is a public site id).
