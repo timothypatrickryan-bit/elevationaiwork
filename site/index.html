@@ -1,310 +1,478 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Elevation AI — Operations software for the people who build infrastructure</title>
-  <meta name="description" content="Elevation AI builds field-tested operations software for telecom and data-center construction: project controls, budgets, close-out, safety, QC, fleet and tools — designed with the crews who use it.">
-  <meta property="og:title" content="Elevation AI">
-  <meta property="og:description" content="Operations software for the people who build infrastructure.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://elevationaiwork.com/">
-  <meta property="og:image" content="https://elevationaiwork.com/assets/og.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Elevation AI — Operations software for the people who build infrastructure.">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Elevation AI">
-  <meta name="twitter:description" content="Operations software for the people who build infrastructure.">
-  <meta name="twitter:image" content="https://elevationaiwork.com/assets/og.png">
-  <link rel="canonical" href="https://elevationaiwork.com/">
-  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elevation AI Work — Enterprise-grade ops software for services businesses</title>
+<meta name="description" content="Custom web apps and deployment platforms for services industries. The tools the largest firms run on — built for small and mid-sized businesses at a fraction of the cost.">
+<meta property="og:title" content="Elevation AI Work">
+<meta property="og:description" content="Enterprise-grade ops software for services businesses — the tools the biggest firms run on, at a fraction of the cost.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://elevationaiwork.com/">
+<meta property="og:image" content="https://elevationaiwork.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Elevation AI Work — Enterprise-grade ops software for services businesses">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Elevation AI Work">
+<meta name="twitter:description" content="Enterprise-grade ops software for services businesses — the tools the biggest firms run on, at a fraction of the cost.">
+<meta name="twitter:image" content="https://elevationaiwork.com/assets/og.png">
+<link rel="canonical" href="https://elevationaiwork.com/">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+SemiCondensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1B2B;
+  --panel:#102640;
+  --panel-2:#0E2136;
+  --line:#1E3A5C;
+  --draft:#6FD3E8;
+  --draft-dim:#3E7E96;
+  --paper:#F2F7FA;
+  --muted:#9DB4C6;
+  --amber:#F2A93B;
+  --amber-deep:#D98F1F;
+  --radius:10px;
+  --disp:'Saira SemiCondensed',sans-serif;
+  --body:'IBM Plex Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* blueprint grid backdrop */
+body::before{
+  content:"";
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(111,211,232,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(111,211,232,.045) 1px, transparent 1px);
+  background-size:56px 56px;
+}
+main,header,footer{position:relative;z-index:1}
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+
+/* ---------- nav ---------- */
+nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(11,27,43,.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper)}
+.logo-mark{width:30px;height:30px;flex:0 0 auto}
+.logo-word{font-family:var(--disp);font-weight:700;font-size:1.15rem;letter-spacing:.02em}
+.logo-word span{color:var(--draft)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.92rem;font-weight:500;transition:color .15s}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--paper)}
+.btn{
+  display:inline-block;font-family:var(--disp);font-weight:600;font-size:1rem;
+  letter-spacing:.03em;text-decoration:none;border-radius:8px;
+  padding:12px 24px;transition:transform .15s, box-shadow .15s, background .15s;
+  cursor:pointer;border:none;
+}
+.btn-amber{background:var(--amber);color:#231602}
+.btn-amber:hover,.btn-amber:focus-visible{background:#FFBE55;transform:translateY(-1px);box-shadow:0 8px 24px rgba(242,169,59,.25)}
+.btn-ghost{border:1px solid var(--draft-dim);color:var(--draft);background:transparent}
+.btn-ghost:hover,.btn-ghost:focus-visible{border-color:var(--draft);background:rgba(111,211,232,.06)}
+.btn-sm{padding:9px 18px;font-size:.9rem}
+a:focus-visible,button:focus-visible{outline:2px solid var(--draft);outline-offset:3px}
+
+/* ---------- hero ---------- */
+.hero{padding:88px 0 72px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.eyebrow{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--draft);
+  display:flex;align-items:center;gap:10px;margin-bottom:20px;
+}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--draft)}
+h1{
+  font-family:var(--disp);font-weight:700;
+  font-size:clamp(2.4rem,5vw,3.7rem);
+  line-height:1.06;letter-spacing:-.01em;margin-bottom:22px;
+}
+h1 em{font-style:normal;color:var(--amber)}
+.lede{font-size:1.15rem;color:var(--muted);max-width:34em;margin-bottom:34px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.hero-note{font-family:var(--mono);font-size:.78rem;color:var(--draft-dim);margin-top:18px}
+
+/* hero schematic */
+.schematic{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px 18px 12px;
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.schematic-head{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;
+  color:var(--draft-dim);text-transform:uppercase;
+  border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px;
+}
+.schematic-head b{color:var(--draft);font-weight:500}
+.schematic svg{width:100%;height:auto;display:block}
+.draw{stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 2.4s ease forwards}
+.draw.d2{animation-delay:.5s}
+.draw.d3{animation-delay:1s}
+.fade-in{opacity:0;animation:fadein .8s ease forwards}
+.fade-in.f1{animation-delay:1.2s}.fade-in.f2{animation-delay:1.6s}.fade-in.f3{animation-delay:2s}.fade-in.f4{animation-delay:2.4s}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+
+/* ---------- section scaffolding ---------- */
+section{padding:84px 0}
+.sec-head{max-width:640px;margin-bottom:48px}
+h2{
+  font-family:var(--disp);font-weight:700;
+  font-size:clamp(1.7rem,3.4vw,2.4rem);line-height:1.15;margin-bottom:14px;
+}
+.sec-head p{color:var(--muted)}
+.alt{background:linear-gradient(180deg, rgba(16,38,64,.55), rgba(16,38,64,0));border-top:1px solid var(--line)}
+
+/* ---------- industries ---------- */
+.chip-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.chip{
+  font-family:var(--mono);font-size:.8rem;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:8px 16px;
+  background:rgba(16,38,64,.4);
+}
+.chip b{color:var(--draft);font-weight:500}
+
+/* ---------- build cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{
+  background:var(--panel-2);border:1px solid var(--line);
+  border-radius:var(--radius);padding:28px 26px;
+  transition:border-color .2s, transform .2s;
+}
+.card:hover{border-color:var(--draft-dim);transform:translateY(-3px)}
+.card-icon{width:38px;height:38px;margin-bottom:18px}
+.card h3{font-family:var(--disp);font-weight:600;font-size:1.2rem;margin-bottom:10px}
+.card p{color:var(--muted);font-size:.95rem}
+.card ul{list-style:none;margin-top:14px}
+.card li{
+  color:var(--muted);font-size:.9rem;padding-left:18px;position:relative;margin-bottom:7px;
+}
+.card li::before{content:"—";position:absolute;left:0;color:var(--draft)}
+
+/* ---------- process ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.step{padding:32px 28px;background:var(--panel-2)}
+.step + .step{border-left:1px solid var(--line)}
+.step-tag{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:14px;display:block;
+}
+.step h3{font-family:var(--disp);font-weight:600;font-size:1.15rem;margin-bottom:10px}
+.step p{color:var(--muted);font-size:.93rem}
+
+/* ---------- comparison ---------- */
+.compare{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+.compare-col{
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:30px 28px;background:var(--panel-2);
+}
+.compare-col.win{border-color:var(--amber-deep);background:linear-gradient(180deg, rgba(242,169,59,.07), rgba(16,38,64,.4))}
+.compare-col h3{font-family:var(--disp);font-size:1.2rem;font-weight:600;margin-bottom:6px}
+.compare-col .sub{font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.compare-col.win .sub{color:var(--amber)}
+.compare-col ul{list-style:none}
+.compare-col li{padding:10px 0 10px 28px;position:relative;color:var(--muted);font-size:.95rem;border-bottom:1px solid rgba(30,58,92,.5)}
+.compare-col li:last-child{border-bottom:none}
+.compare-col li::before{position:absolute;left:0;font-family:var(--mono)}
+.compare-col.lose li::before{content:"✕";color:#C46A6A}
+.compare-col.win li::before{content:"✓";color:var(--amber)}
+.compare-col.win li{color:var(--paper)}
+
+/* ---------- CTA ---------- */
+.cta-band{
+  border:1px solid var(--line);border-radius:14px;
+  background:
+    linear-gradient(135deg, rgba(111,211,232,.08), rgba(242,169,59,.06)),
+    var(--panel);
+  padding:64px 48px;text-align:center;
+}
+.cta-band h2{margin-bottom:12px}
+.cta-band p{color:var(--muted);max-width:38em;margin:0 auto 30px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:36px 0;margin-top:40px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot small{color:var(--draft-dim);font-family:var(--mono);font-size:.75rem}
+
+/* ---------- reveal on scroll ---------- */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+.reveal.on{opacity:1;transform:none}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .draw{animation:none;stroke-dashoffset:0}
+  .fade-in{animation:none;opacity:1}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+@media (max-width: 900px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .cards{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .step + .step{border-left:none;border-top:1px solid var(--line)}
+  .compare{grid-template-columns:1fr}
+  .nav-links a:not(.btn){display:none}
+  section{padding:60px 0}
+  .cta-band{padding:44px 24px}
+}
+</style>
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
 
-  <header class="nav" id="top">
-    <div class="wrap nav__inner">
-      <a class="brand" href="#top" aria-label="Elevation AI home">
-        <img src="assets/logo.svg" alt="" width="32" height="32">
-        <span>Elevation<b>AI</b></span>
-      </a>
-      <nav class="nav__links" aria-label="Primary">
-        <a href="#products">Products</a>
-        <a href="#approach">Approach</a>
-        <a href="#insights">Insights</a>
-        <a href="#about">About</a>
-      </nav>
-      <a class="btn btn--primary btn--sm" href="#contact">Talk to us</a>
-      <button class="nav__toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
+<nav>
+  <div class="wrap nav-inner">
+    <a class="logo" href="#top" aria-label="Elevation AI Work home">
+      <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M4 24 L16 6 L28 24" stroke="#6FD3E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10 24 L16 15 L22 24" stroke="#F2A93B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-word">Elevation <span>AI</span> Work</span>
+    </a>
+    <div class="nav-links">
+      <a href="#build">What we build</a>
+      <a href="#process">Process</a>
+      <a href="#why">Why us</a>
+      <a href="#contact" class="btn btn-amber btn-sm">Start a project</a>
     </div>
-    <div class="nav__mobile" id="mobile-menu" hidden>
-      <a href="#products">Products</a>
-      <a href="#approach">Approach</a>
-      <a href="#insights">Insights</a>
-      <a href="#about">About</a>
-      <a href="#contact" class="btn btn--primary">Talk to us</a>
+  </div>
+</nav>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Custom web apps · Services industries</span>
+      <h1>The tools the biggest firms run on. <em>At a fraction of the cost.</em></h1>
+      <p class="lede">We design, build, and deploy custom web applications for services businesses that live on project management and large-scale deployments — field operations, work order tracking, close-out, and reporting that fit the way your crews actually work.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-amber" href="#contact">Start a project</a>
+        <a class="btn btn-ghost" href="#build">See what we build</a>
+      </div>
+      <p class="hero-note">Built for small &amp; mid-sized operators. No enterprise seat licenses. No per-user tax.</p>
     </div>
-  </header>
 
-  <main id="main">
+    <figure class="schematic" aria-label="Deployment program schematic">
+      <div class="schematic-head"><b>DEPLOYMENT PLAN — REV C</b><span>ELEV-AI-001</span></div>
+      <svg viewBox="0 0 520 360" fill="none" role="img" aria-hidden="true">
+        <!-- gantt bars -->
+        <g font-family="'IBM Plex Mono',monospace" font-size="11" fill="#9DB4C6">
+          <text x="16" y="42">SCOPE</text>
+          <text x="16" y="84">BUILD</text>
+          <text x="16" y="126">DEPLOY</text>
+          <text x="16" y="168">CLOSE-OUT</text>
+        </g>
+        <line class="draw" x1="100" y1="20" x2="100" y2="185" stroke="#1E3A5C" stroke-width="1"/>
+        <rect class="fade-in f1" x="100" y="30" width="110" height="16" rx="3" fill="#3E7E96"/>
+        <rect class="fade-in f2" x="150" y="72" width="180" height="16" rx="3" fill="#6FD3E8"/>
+        <rect class="fade-in f3" x="270" y="114" width="170" height="16" rx="3" fill="#F2A93B"/>
+        <rect class="fade-in f4" x="380" y="156" width="120" height="16" rx="3" fill="#3E7E96"/>
+        <!-- divider -->
+        <line class="draw d2" x1="16" y1="205" x2="504" y2="205" stroke="#1E3A5C" stroke-width="1"/>
+        <!-- site network -->
+        <g class="draw d2" stroke="#6FD3E8" stroke-width="1.5">
+          <path d="M70 300 L170 250 L290 295 L400 240 L460 285"/>
+        </g>
+        <g class="fade-in f2">
+          <circle cx="70" cy="300" r="7" fill="#0B1B2B" stroke="#6FD3E8" stroke-width="2"/>
+          <circle cx="170" cy="250" r="7" fill="#0B1B2B" stroke="#6FD3E8" stroke-width="2"/>
+          <circle cx="290" cy="295" r="7" fill="#0B1B2B" stroke="#F2A93B" stroke-width="2"/>
+          <circle cx="400" cy="240" r="7" fill="#0B1B2B" stroke="#6FD3E8" stroke-width="2"/>
+          <circle cx="460" cy="285" r="7" fill="#0B1B2B" stroke="#6FD3E8" stroke-width="2"/>
+        </g>
+        <g class="fade-in f3" font-family="'IBM Plex Mono',monospace" font-size="10" fill="#9DB4C6">
+          <text x="52" y="325">SITE 01</text>
+          <text x="150" y="235">SITE 02</text>
+          <text x="266" y="320">SITE 03</text>
+          <text x="380" y="225">SITE 04</text>
+          <text x="440" y="310">SITE 05</text>
+        </g>
+        <g class="fade-in f4" font-family="'IBM Plex Mono',monospace" font-size="10">
+          <rect x="330" y="330" width="174" height="22" rx="4" fill="#102640" stroke="#1E3A5C"/>
+          <text x="340" y="345" fill="#F2A93B">▲ 5 SITES · ON SCHEDULE</text>
+        </g>
+      </svg>
+    </figure>
+  </div>
+</header>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero__bg" aria-hidden="true"></div>
-      <div class="wrap hero__inner">
-        <p class="eyebrow"><span class="dot"></span> Telecom &middot; Data centers &middot; Field operations</p>
-        <h1>Operations software for the people who <span class="grad">build infrastructure.</span></h1>
-        <p class="lede">Elevation AI designs and ships the tools crews, PMs and owners actually use — project controls, budgets, close-out, safety, QC, fleet and tools — built with AI, tested in the field, and live in weeks instead of quarters.</p>
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="#contact">Start a conversation</a>
-          <a class="btn btn--ghost" href="#products">See what we've built <span aria-hidden="true">&rarr;</span></a>
-        </div>
-        <ul class="hero__stats" aria-label="At a glance">
-          <li><strong>7+</strong><span>production systems shipped</span></li>
-          <li><strong>Days</strong><span>from problem to working software</span></li>
-          <li><strong>Field-first</strong><span>mobile, offline-tolerant, crew-proof</span></li>
+<!-- ============ INDUSTRIES ============ -->
+<section class="alt reveal" id="industries">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Built for the businesses that build everything else.</h2>
+      <p>If your work runs on work orders, crews, sites, and deadlines — and your software runs on spreadsheets and email — you're exactly who we build for.</p>
+    </div>
+    <div class="chip-row">
+      <span class="chip"><b>▸</b> Telecom &amp; wireless construction</span>
+      <span class="chip"><b>▸</b> Fiber &amp; utility contractors</span>
+      <span class="chip"><b>▸</b> Electrical &amp; mechanical</span>
+      <span class="chip"><b>▸</b> Field services &amp; maintenance</span>
+      <span class="chip"><b>▸</b> Environmental &amp; civil</span>
+      <span class="chip"><b>▸</b> Multi-site program operators</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT WE BUILD ============ -->
+<section id="build" class="reveal">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>What we build</h2>
+      <p>Purpose-built software that replaces the patchwork — the shared spreadsheets, the enterprise tools you only use 10% of, and the paper still riding around in trucks.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <svg class="card-icon" viewBox="0 0 38 38" fill="none" aria-hidden="true"><rect x="3" y="5" width="32" height="24" rx="3" stroke="#6FD3E8" stroke-width="2"/><line x1="3" y1="12" x2="35" y2="12" stroke="#6FD3E8" stroke-width="2"/><rect x="8" y="17" width="10" height="3" fill="#F2A93B"/><rect x="8" y="23" width="16" height="3" fill="#3E7E96"/></svg>
+        <h3>Project &amp; program management apps</h3>
+        <p>Track every site, work order, and milestone across a full program — not one project at a time.</p>
+        <ul>
+          <li>Multi-site deployment tracking</li>
+          <li>Work order lifecycle &amp; scheduling</li>
+          <li>Budget, WIP &amp; margin visibility</li>
         </ul>
       </div>
-    </section>
-
-    <!-- PROBLEM -->
-    <section class="band">
-      <div class="wrap band__grid">
-        <div>
-          <h2 class="h2">The work is hard enough. The software shouldn't be.</h2>
-        </div>
-        <div class="band__copy">
-          <p>Infrastructure builders run on spreadsheets, group texts, PDFs and memory. Budgets drift. Close-out packages take months. Safety, QC and fleet live in binders nobody opens until an audit. Off-the-shelf platforms are either built for vertical construction or priced for enterprises with an IT department.</p>
-          <p>We build the missing layer: purpose-built operations software for telecom and data-center contractors — fast, affordable, and shaped around how the work actually happens.</p>
-        </div>
+      <div class="card">
+        <svg class="card-icon" viewBox="0 0 38 38" fill="none" aria-hidden="true"><rect x="11" y="3" width="16" height="32" rx="3" stroke="#6FD3E8" stroke-width="2"/><line x1="16" y1="30" x2="22" y2="30" stroke="#F2A93B" stroke-width="2.5" stroke-linecap="round"/><rect x="15" y="9" width="8" height="8" rx="1" fill="#3E7E96"/></svg>
+        <h3>Field &amp; crew tools</h3>
+        <p>Mobile-first tools your crews will actually use — built for gloves, sunlight, and spotty coverage.</p>
+        <ul>
+          <li>Close-out packages &amp; photo capture</li>
+          <li>Daily reporting &amp; timesheets</li>
+          <li>Checklists, QC &amp; punch lists</li>
+        </ul>
       </div>
-    </section>
-
-    <!-- PRODUCTS -->
-    <section class="section" id="products">
-      <div class="wrap">
-        <div class="section__head">
-          <p class="kicker">What we've built</p>
-          <h2 class="h2">One platform, end to end — from the first work order to the last close-out photo.</h2>
-          <p class="sub">Every product below is running in production today. Each started as a real problem on a real job.</p>
-        </div>
-
-        <div class="grid grid--3">
-          <article class="card card--feature">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM3 10h11v11H3zM17 10h4v11h-4z"/></svg>
-            </div>
-            <h3>PNET Platform</h3>
-            <p>Unified project management for contractors: projects, work orders, roles and permissions, with Budget, Close-Out, Safety, QC Dashboard, Fleet and Tools as first-class sections.</p>
-            <ul class="tags"><li>Project controls</li><li>RBAC</li><li>Multi-section</li></ul>
-          </article>
-
-          <article class="card">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 19h16M6 16V9M10 16V5M14 16v-6M18 16V7"/></svg>
-            </div>
-            <h3>Budget Workbench</h3>
-            <p>Live budget vs. actuals, change tracking and forecasting — the numbers the PM needs on Monday, not at month-end.</p>
-            <ul class="tags"><li>Budgets</li><li>Forecasting</li></ul>
-          </article>
-
-          <article class="card">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M5 4h14v16H5z"/></svg>
-            </div>
-            <h3>Close-Out Portal</h3>
-            <p>Scope-item state machines, photo documentation and approval workflows that turn a months-long close-out into a checklist.</p>
-            <ul class="tags"><li>Close-out</li><li>Approvals</li></ul>
-          </article>
-
-          <article class="card">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>
-            </div>
-            <h3>Safety &amp; QC Dashboards</h3>
-            <p>Inspections, incidents, timeliness and quality gates on one screen — owned by the people accountable for them.</p>
-            <ul class="tags"><li>Safety</li><li>Quality</li></ul>
-          </article>
-
-          <article class="card">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M3 13l2-5h10l4 5h2v4H3zM7 20a2 2 0 100-4 2 2 0 000 4zM17 20a2 2 0 100-4 2 2 0 000 4z"/></svg>
-            </div>
-            <h3>Fleet &amp; Tools</h3>
-            <p>A register for vehicles and heavy equipment — registrations, services, inspections with due dates — plus a check-out ledger for who has which tool.</p>
-            <ul class="tags"><li>Assets</li><li>Check-out</li></ul>
-          </article>
-
-          <article class="card">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M7 3h10v18H7zM10 18h4"/></svg>
-            </div>
-            <h3>Field Reports</h3>
-            <p>A mobile PWA for daily crew reports with GPS-stamped photos and AI-written daily and weekly summaries emailed to the office.</p>
-            <ul class="tags"><li>Mobile PWA</li><li>AI summaries</li></ul>
-          </article>
-
-          <article class="card">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16M8 3v18"/></svg>
-            </div>
-            <h3>DC Ops</h3>
-            <p>Data-center splicing and production tracking: work orders, production entries and attendance — migrated from legacy sheets without losing a row.</p>
-            <ul class="tags"><li>Fiber splicing</li><li>Production</li></ul>
-          </article>
-
-          <article class="card card--soon">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M8 12a4 4 0 108 0 4 4 0 00-8 0zM2 12h3M19 12h3M12 2v3M12 19v3"/></svg>
-            </div>
-            <h3>Agora <span class="pill">In development</span></h3>
-            <p>B2B matchmaking where AI agents represent each company, interview each other and pre-qualify the fit — so humans only meet when it's worth it.</p>
-            <ul class="tags"><li>AI agents</li><li>Partner discovery</li></ul>
-          </article>
-        </div>
+      <div class="card">
+        <svg class="card-icon" viewBox="0 0 38 38" fill="none" aria-hidden="true"><path d="M5 30 L13 18 L21 24 L33 8" stroke="#F2A93B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="5" y1="34" x2="33" y2="34" stroke="#6FD3E8" stroke-width="2"/></svg>
+        <h3>Dashboards, portals &amp; websites</h3>
+        <p>Give owners, customers, and subs one live view of the truth — and a web presence that wins work.</p>
+        <ul>
+          <li>Executive &amp; client dashboards</li>
+          <li>Subcontractor portals</li>
+          <li>Marketing sites that convert</li>
+        </ul>
       </div>
-    </section>
-
-    <!-- APPROACH -->
-    <section class="section section--alt" id="approach">
-      <div class="wrap">
-        <div class="section__head">
-          <p class="kicker">How we work</p>
-          <h2 class="h2">Built by an operator, accelerated by AI.</h2>
-          <p class="sub">We are not a software vendor that learned construction. We are infrastructure people who learned to ship software — fast.</p>
-        </div>
-        <ol class="steps">
-          <li>
-            <span class="steps__num">01</span>
-            <h3>Start from the job, not the roadmap</h3>
-            <p>Every tool begins with a concrete problem on a live project: a close-out that stalled, a budget nobody trusted, a tool that walked off. We scope the smallest thing that fixes it.</p>
-          </li>
-          <li>
-            <span class="steps__num">02</span>
-            <h3>Design with the people who will use it</h3>
-            <p>Foremen, PMs, fleet and tools managers, owners. Roles and permissions mirror the org chart. If a screen doesn't survive a muddy phone at 6 a.m., it goes back.</p>
-          </li>
-          <li>
-            <span class="steps__num">03</span>
-            <h3>Ship with AI, verify like engineers</h3>
-            <p>We build with AI agents and modern tooling, so working software lands in days. Then it's type-checked, smoke-tested end to end, and browser-driven before anyone in the field sees it.</p>
-          </li>
-          <li>
-            <span class="steps__num">04</span>
-            <h3>Run it in production, keep improving</h3>
-            <p>Hosted, monitored and iterated. When the work changes, the software changes with it — without a change-order negotiation.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- INSIGHTS -->
-    <section class="section" id="insights">
-      <div class="wrap">
-        <div class="section__head section__head--row">
-          <div>
-            <p class="kicker">Insights</p>
-            <h2 class="h2">Field notes on power, fiber and delivery risk.</h2>
-          </div>
-          <p class="sub">Technical journals and case studies for owners, GCs and contractors building at AI scale.</p>
-        </div>
-        <div class="grid grid--3">
-          <a class="post" href="mailto:hello@elevationaiwork.com?subject=Request%20a%20copy%3A%20When%20power%20becomes%20the%20schedule%20path&amp;body=Hi%20Elevation%20AI%2C%0A%0APlease%20send%20me%20a%20copy%20of%20%22When%20power%20becomes%20the%20schedule%20path%22.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0A">
-            <span class="post__type">Monthly journal &middot; July 2026</span>
-            <h3>When power becomes the schedule path</h3>
-            <p>PJM large-load rules, FERC's June orders, and why utility service now belongs in the same risk register as switchgear and commissioning.</p>
-            <span class="post__more">Request a copy &rarr;</span>
-          </a>
-          <a class="post" href="mailto:hello@elevationaiwork.com?subject=Request%20a%20copy%3A%20Brownfield%20power%20sites%20for%20AI%20data%20centers&amp;body=Hi%20Elevation%20AI%2C%0A%0APlease%20send%20me%20a%20copy%20of%20%22Brownfield%20power%20sites%20for%20AI%20data%20centers%22.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0A">
-            <span class="post__type">Case study</span>
-            <h3>Brownfield power sites for AI data centers</h3>
-            <p>Why retired generation and industrial sites are back on the map — and what the interconnection reality looks like.</p>
-            <span class="post__more">Request a copy &rarr;</span>
-          </a>
-          <a class="post" href="mailto:hello@elevationaiwork.com?subject=Request%20a%20copy%3A%20Fiber%20density%20at%20AI%20scale&amp;body=Hi%20Elevation%20AI%2C%0A%0APlease%20send%20me%20a%20copy%20of%20%22Fiber%20density%20at%20AI%20scale%22.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0A">
-            <span class="post__type">Case study</span>
-            <h3>Fiber density at AI scale</h3>
-            <p>What GPU-cluster topologies do to splice counts, entrance facilities and the labor plan.</p>
-            <span class="post__more">Request a copy &rarr;</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section class="section section--alt" id="about">
-      <div class="wrap about">
-        <div class="about__media" aria-hidden="true">
-          <div class="about__mark">
-            <img src="assets/logo.svg" alt="" width="120" height="120">
-          </div>
-        </div>
-        <div>
-          <p class="kicker">About</p>
-          <h2 class="h2">Founded by Tim Ryan.</h2>
-          <p>Tim has spent his career in telecom and data-center construction — from splicing fiber to running projects and close-outs for national carriers and hyperscale owners. Elevation AI grew out of a simple frustration: the software the industry was handed never matched the work.</p>
-          <p>Today Elevation AI pairs that operating experience with AI-assisted engineering to deliver tools in weeks, priced for contractors — not enterprises.</p>
-          <p class="about__quote">“If it doesn't help the crew on Monday morning, it isn't finished.”</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section class="cta" id="contact">
-      <div class="wrap cta__inner">
-        <div>
-          <h2 class="h2">Have a problem on a job that software should have solved by now?</h2>
-          <p class="sub">Tell us what's slowing your team down. We'll come back with a plan — usually within two business days.</p>
-        </div>
-        <div class="cta__actions">
-          <a class="btn btn--primary btn--lg" href="mailto:hello@elevationaiwork.com?subject=Elevation%20AI%20inquiry">hello@elevationaiwork.com</a>
-          <a class="btn btn--ghost btn--lg" href="https://dcops.elevationaiwork.com" rel="noopener">See DC Ops live &rarr;</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="wrap footer__inner">
-      <a class="brand brand--sm" href="#top">
-        <img src="assets/logo.svg" alt="" width="24" height="24">
-        <span>Elevation<b>AI</b></span>
-      </a>
-      <p>&copy; <span id="year">2026</span> Elevation AI. Operations software for the people who build infrastructure.</p>
-      <nav aria-label="Footer">
-        <a href="#products">Products</a>
-        <a href="#approach">Approach</a>
-        <a href="#insights">Insights</a>
-        <a href="#contact">Contact</a>
-      </nav>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    (function () {
-      var btn = document.querySelector('.nav__toggle');
-      var menu = document.getElementById('mobile-menu');
-      btn.addEventListener('click', function () {
-        var open = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', String(!open));
-        btn.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
-        menu.hidden = open;
-        document.body.classList.toggle('menu-open', !open);
-      });
-      menu.addEventListener('click', function (e) {
-        if (e.target.tagName === 'A') btn.click();
-      });
-      document.getElementById('year').textContent = new Date().getFullYear();
-    })();
-  </script>
-  <!-- Cloudflare Web Analytics (cookie-free) -->
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bd56ec2d668b4f5a9fb798005dfa0ae0"}'></script>
+<!-- ============ PROCESS ============ -->
+<section id="process" class="alt reveal">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>From scope to deployed. Fast.</h2>
+      <p>We come from the industries we build for. That means less time explaining your business — and more time shipping the tool.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-tag">Phase 1 — Scope</span>
+        <h3>We learn how the work really flows</h3>
+        <p>We map your current process — the spreadsheets, the emails, the workarounds — and spec exactly what the software has to do. No 40-page requirements doc. A working plan in days.</p>
+      </div>
+      <div class="step">
+        <span class="step-tag">Phase 2 — Build</span>
+        <h3>AI-accelerated development</h3>
+        <p>We build with modern AI-assisted engineering, which is how a two-week build replaces a two-year enterprise rollout. You see working software early and steer it as it takes shape.</p>
+      </div>
+      <div class="step">
+        <span class="step-tag">Phase 3 — Deploy</span>
+        <h3>Live, trained, and supported</h3>
+        <p>We deploy, migrate your data, train your team, and stay on for support. Your tool grows with you — new sites, new programs, new customers, same platform.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section id="why" class="reveal">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Enterprise capability without the enterprise price tag</h2>
+      <p>The biggest firms in your industry spend millions on custom platforms. The off-the-shelf alternatives charge you per seat for software that fits nobody. There's a better way.</p>
+    </div>
+    <div class="compare">
+      <div class="compare-col lose">
+        <h3>Enterprise SaaS</h3>
+        <div class="sub">The old math</div>
+        <ul>
+          <li>Per-seat pricing that punishes growth</li>
+          <li>Generic workflows you bend around</li>
+          <li>6–18 month implementations</li>
+          <li>Features you'll never touch, billed anyway</li>
+          <li>Your data, their platform</li>
+        </ul>
+      </div>
+      <div class="compare-col win">
+        <h3>Elevation AI Work</h3>
+        <div class="sub">The new math</div>
+        <ul>
+          <li>Flat, predictable project pricing</li>
+          <li>Built around your exact workflow</li>
+          <li>Working software in weeks, not quarters</li>
+          <li>Only the features your operation needs</li>
+          <li>You own the tool — and the data</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section id="contact" class="reveal">
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>Tell us what's slowing your operation down.</h2>
+      <p>A 30-minute call is all it takes to scope your first tool. If we're not the right fit, we'll tell you — and point you somewhere better.</p>
+      <a class="btn btn-amber" href="mailto:hello@elevationaiwork.com">hello@elevationaiwork.com</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="#top" aria-label="Elevation AI Work home">
+      <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M4 24 L16 6 L28 24" stroke="#6FD3E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10 24 L16 15 L22 24" stroke="#F2A93B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-word">Elevation <span>AI</span> Work</span>
+    </a>
+    <small>ELEVATIONAIWORK.COM · CUSTOM WEB APPS FOR SERVICES INDUSTRIES · © 2026</small>
+  </div>
+</footer>
+
+<script>
+// scroll reveal
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target);} });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+<!-- Cloudflare Web Analytics (cookie-free) -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bd56ec2d668b4f5a9fb798005dfa0ae0"}'></script>
 </body>
 </html>

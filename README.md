@@ -4,8 +4,7 @@ Static marketing site for **Elevation AI** (elevationaiwork.com). No build step.
 
 ```
 site/
-  index.html          # the page
-  assets/styles.css   # all styling (dark, responsive, reduced-motion aware)
+  index.html          # the page (self-contained: inline CSS + scroll-reveal JS)
   assets/logo.svg     # mark + favicon
   assets/og.png       # social preview image (1200×630)
 ```
@@ -36,7 +35,5 @@ Any other static host works too (Cloudflare Pages, Netlify, S3) — just serve `
 ## Open items before going live
 
 - [x] `hello@elevationaiwork.com` forwards via Cloudflare Email Routing → timothy.patrick.ryan@gmail.com.
-- [x] "Request a copy" insight cards open a pre-filled request email (swap for direct PDF links once hosted).
-- [ ] Decide which products should link out publicly (only DC Ops is linked today).
 - [x] OG/Twitter image at `assets/og.png` (1200×630), wired into the meta tags.
 - [x] Cloudflare Web Analytics beacon installed (cookie-free; token is a public site id).
