@@ -17,13 +17,20 @@ python3 -m http.server 8090 --directory site
 
 then open http://localhost:8090.
 
-## Deploy (Cloudflare Pages — the `elevationaiwork.com` zone is already on Cloudflare)
+## Deploy (Render static site + Cloudflare DNS)
 
-1. Cloudflare dashboard → Workers & Pages → Create → Pages → **Upload assets** (or connect the GitHub repo).
-2. Build settings: no framework, build command empty, output directory `site`.
-3. Custom domains → add `elevationaiwork.com` and `www.elevationaiwork.com` (Cloudflare writes the CNAMEs for you; `dcops.elevationaiwork.com` is untouched).
+`render.yaml` is a Render Blueprint: static site, no build command, publish directory `site`.
 
-Any static host works (Render static site, Netlify, S3) — just serve `site/`.
+1. Render dashboard → **New → Blueprint** → select this repo → Apply. (Or New → Static Site: build command empty, publish directory `site`.)
+2. In the Render service → **Settings → Custom Domains** → add `elevationaiwork.com` and `www.elevationaiwork.com`. Render shows the records to create.
+3. Cloudflare dashboard → DNS for `elevationaiwork.com`:
+   - `www` → **CNAME** → `<service>.onrender.com`
+   - apex `@` → **CNAME** → `<service>.onrender.com` (Cloudflare flattens CNAMEs at the apex) — or the A record Render gives you
+   - Leave `dcops.elevationaiwork.com` untouched.
+   - Start with the proxy **off (DNS only / grey cloud)** until Render issues its TLS cert; you can turn the orange cloud on afterwards if you want Cloudflare in front. If proxied, set SSL/TLS mode to **Full (strict)**.
+4. Render auto-deploys on every push to `main`; PRs get preview URLs.
+
+Any other static host works too (Cloudflare Pages, Netlify, S3) — just serve `site/`.
 
 ## Open items before going live
 

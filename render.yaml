@@ -1,0 +1,21 @@
+# Render Blueprint — static site, no build step.
+# Render dashboard: New → Blueprint → pick this repo, or New → Static Site with
+# build command empty and publish directory "site".
+services:
+  - type: web
+    name: elevationaiwork
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: site
+    pullRequestPreviewsEnabled: true
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+    routes: []
