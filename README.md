@@ -7,6 +7,7 @@ site/
   index.html          # the page
   assets/styles.css   # all styling (dark, responsive, reduced-motion aware)
   assets/logo.svg     # mark + favicon
+  assets/og.png       # social preview image (1200×630)
 ```
 
 ## Preview locally
@@ -35,7 +36,7 @@ Any other static host works too (Cloudflare Pages, Netlify, S3) — just serve `
 ## Open items before going live
 
 - [ ] Confirm contact address (page uses `hello@elevationaiwork.com`; set up the mailbox/forward in Cloudflare Email Routing or Resend).
-- [ ] Replace the three "Request a copy" insight cards with real links once the journal/case-study PDFs are hosted.
+- [x] "Request a copy" insight cards open a pre-filled request email (swap for direct PDF links once hosted).
 - [ ] Decide which products should link out publicly (only DC Ops is linked today).
-- [ ] Add an OG image (`assets/og.png`, 1200×630) and reference it in the `<meta property="og:image">`.
+- [x] OG/Twitter image at `assets/og.png` (1200×630), wired into the meta tags.
 - [ ] Optional: analytics (Cloudflare Web Analytics is one script tag, no cookies).
