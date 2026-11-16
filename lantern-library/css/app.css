@@ -756,7 +756,7 @@ textarea.field { min-height: 92px; font-family: ui-monospace, Menlo, monospace; 
 .tint { width: 42px; height: 42px; border-radius: 50%; border: 3px solid var(--night-4); background: var(--paper); }
 .tint[aria-pressed="true"] { border-color: var(--glow); }
 
-.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 60; max-width: calc(100vw - 32px); display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 999px; background: var(--ink); color: var(--night-0); font-weight: 800; box-shadow: 0 12px 30px rgba(4, 5, 20, 0.6); animation: toast-in 0.25s ease both; }
+.toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 60; max-width: calc(100vw - 32px); display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 999px; background: var(--ink); color: var(--night-0); font-weight: 800; box-shadow: 0 12px 30px rgba(4, 5, 20, 0.6); animation: toast-in 0.25s ease both; }
 .toast .ico { color: var(--glow-deep); }
 .toast.is-out { opacity: 0; transition: opacity 0.3s ease; }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
