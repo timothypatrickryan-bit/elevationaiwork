@@ -43,6 +43,12 @@ endpoint is down, the form falls back to a pre-filled mailto.
 
 Any other static host works too (Cloudflare Pages, Netlify, S3) — just serve `site/`.
 
+## Also in this repo
+
+[`lantern-library/`](lantern-library/README.md) is a separate, self-contained
+reading game for the iPad. It is not part of the landing page and is not
+published by `render.yaml`; its README explains how to host it.
+
 ## Open items before going live
 
 - [x] `hello@elevationaiwork.com` forwards via Cloudflare Email Routing → timothy.patrick.ryan@gmail.com.
