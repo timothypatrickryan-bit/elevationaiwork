@@ -12,7 +12,7 @@ import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const INCLUDE = ['index.html', 'manifest.webmanifest', 'css', 'fonts', 'icons', 'js'];
+const INCLUDE = ['index.html', 'manifest.json', 'css', 'fonts', 'icons', 'js'];
 const SKIP = /(^|\/)(README\.md|\.DS_Store)$/;
 
 function walk(path) {

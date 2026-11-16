@@ -4,12 +4,12 @@
 // The file list and version below are written by tools/update-offline-list.mjs.
 // Run that script after adding, removing or changing any file.
 
-const VERSION = 'lantern-library-ecbf4576c4';
+const VERSION = 'lantern-library-d485587f9d';
 const ASSETS = [
   /* ASSETS:START */
   './',
   'index.html',
-  'manifest.webmanifest',
+  'manifest.json',
   'css/app.css',
   'css/fonts.css',
   'fonts/fraunces-soft.woff2',

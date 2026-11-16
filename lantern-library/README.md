@@ -63,6 +63,11 @@ address once. After that it lives on the Home Screen and works offline.
 3. **Open it from the new icon.** It runs full screen, and after the first
    launch it no longer needs a connection.
 
+This copy is deployed that way already, as the Render static site named
+`lantern-library`. It redeploys by itself whenever the branch it was created
+from is pushed. If that branch is merged and deleted, point the service at
+`main` under Settings → Branch in the Render dashboard.
+
 Things worth knowing:
 
 - Progress is stored by the Home Screen app. Deleting the icon deletes the
@@ -86,7 +91,7 @@ file) because the code is split into modules.
 
 ```
 index.html              the page
-manifest.webmanifest    name, colors and icons for the Home Screen
+manifest.json           name, colors and icons for the Home Screen
 sw.js                   offline support
 css/                    styles and the font declarations
 fonts/                  three open-licensed typefaces (see fonts/README.md)
