@@ -1,0 +1,16 @@
+/* Self-hosted so the game looks the same offline. Both families are under the
+   SIL Open Font License (see fonts/README.md). */
+@font-face {
+  font-family: "Caprasimo";
+  src: url("../fonts/caprasimo.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("../fonts/atkinson-next.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}

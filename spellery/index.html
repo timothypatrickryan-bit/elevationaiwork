@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Spellery</title>
+<meta name="description" content="A spelling game: every word is a spell. Fill the jars, fix the fizzles.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Spellery">
+<meta name="theme-color" content="#f3edff">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="preload" href="fonts/atkinson-next.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/caprasimo.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  /* Keeps the game clear of the status bar and home indicator when it runs
+     full screen from the Home Screen. */
+  :root { padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); }
+  body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app" class="app">
+  <div class="screen welcome"><div class="welcome-inner"><h1 class="display welcome-title">The Spellery</h1><p class="welcome-text">Warming the cauldron…</p><noscript><p class="welcome-text">This game needs JavaScript turned on.</p></noscript></div></div>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
