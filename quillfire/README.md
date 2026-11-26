@@ -207,8 +207,9 @@ node tools/update-offline-list.mjs
 because the script sets the length of single sounds, which newer versions of
 that package may do differently.) `check-voice.py` also needs `pip install
 faster-whisper`. Finished clips are kept in `voice-work/` between runs, so only
-what changed is made again. How a name is pronounced can be corrected in the
-`SAY_ALWAYS` table at the top of `make-voice.py`.
+what changed is made again. How a name or a word part is pronounced can be
+corrected in the `SAY_ALWAYS` table at the top of `make-voice.py`. A clip that
+comes out hurried is made again more slowly by the script itself.
 
 Each clip is spoken in the middle of a longer line and then cut out of it,
 because the speech model adds a small noise before the first sound and after

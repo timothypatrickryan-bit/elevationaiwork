@@ -35,6 +35,11 @@ RATE = 24000
 VOICE = 'af_bella'
 SPEED = {'line': 1.0, 'read': 0.92}  # Blip's own lines, and sentences read aloud
 BITRATE = '40k'
+# The model hurries through some short sentences. A clip spoken faster than
+# MAX_PACE beats (vowel sounds) a second is made again, slowed to about EASY_PACE.
+MAX_PACE = 5.4
+EASY_PACE = 5.0
+PADDING = 0.22  # seconds of silence that tidy() puts around a clip
 # Every clip is spoken in the middle of a longer line, "Spell this word: ... -- Next word.",
 # and the two ends are cut off again (see Speaker.speak). A frame is: what is said before
 # the clip, the mark between the two, how many times longer than usual that mark is held,
@@ -56,7 +61,17 @@ SAY_ALWAYS = {
     'ana': 'ˈɑnə',
     'blip': 'blˈɪp',
     'zed': 'zˈɛd',
+    're': 'ɹˈi',     # the prefix, in "Re means again" (otherwise said like "ray")
+    'ful': 'fˈʊl',   # the suffix, in "Ful means full of"
 }
+# A word said differently after another word: (the word before, the word) -> how it is said.
+# "Want to" is otherwise run together into something close to "wanna".
+SAY_AFTER = {
+    ('want', 'to'): 'tu',
+}
+
+
+VOWELS = set('AIOWYaeiouæɑɒɔəɛɜɪʊʌᵊᵻɚ')  # one for each beat of a word, in Kokoro's alphabet
 
 
 def norm_key(text):
@@ -76,9 +91,15 @@ class Speaker:
     def phonemes(self, item):
         _, tokens = self.g2p(item['text'])
         out = ''
+        before = ''
         for tok in tokens:
-            ph = SAY_ALWAYS.get(norm_key(tok.text).lower(), tok.phonemes)
-            out += (ph if ph is not None else '') + tok.whitespace
+            word = norm_key(tok.text).lower()
+            ph = SAY_AFTER.get((before, word)) or SAY_ALWAYS.get(word, tok.phonemes)
+            ph = ph if ph is not None else ''
+            if len(word) == 2 and word[0].isalpha() and word[1] == '.' and not ph.endswith('.'):
+                ph += '.'  # "add an S." is the end of a sentence, not somebody's initial
+            out += ph + tok.whitespace
+            before = word
         if not out.rstrip().endswith(('.', '!', '?', '"', '”')):
             out = out.rstrip() + '.'  # a title such as "Moon Dust" still ends like a sentence
         return out
@@ -226,12 +247,8 @@ def main():
     VOICE = args.voice
     speaker = Speaker()
 
-    report = []
-    packs = {}
-    for n, item in enumerate(items):
-        key = norm_key(item['text'])
-        ph = speaker.phonemes(item)
-        speed = SPEED[item['kind']]
+    def clip(ph, speed):
+        """The finished clip for these phonemes at this speed, made now or on an earlier run."""
         stamp = hashlib.sha1(f'q1|{VOICE}|{speed}|{BITRATE}|{ph}'.encode()).hexdigest()[:16]
         path = os.path.join(args.work, stamp + '.mp3')
         if not os.path.exists(path):
@@ -241,10 +258,24 @@ def main():
             os.replace(path + '.tmp', path)
             np.save(os.path.join(args.work, stamp + '.len.npy'), np.array([len(audio) / RATE, 1.0 if speaker.clean else 0.0, float(speaker.frame)]))
         seconds, clean, frame = (float(x) for x in np.load(os.path.join(args.work, stamp + '.len.npy')))
+        return path, seconds, clean, frame
+
+    report = []
+    packs = {}
+    for n, item in enumerate(items):
+        key = norm_key(item['text'])
+        ph = speaker.phonemes(item)
+        speed = SPEED[item['kind']]
+        path, seconds, clean, frame = clip(ph, speed)
+        beats = sum(1 for ch in ph if ch in VOWELS)
+        pace = beats / max(0.2, seconds - PADDING)
+        if pace > MAX_PACE and beats >= 3:
+            speed = round(max(0.72, speed * EASY_PACE / pace), 2)
+            path, seconds, clean, frame = clip(ph, speed)
         if not clean:
             print(f'  no clear silence around {key!r}; it was cut by the clock instead', flush=True)
         packs.setdefault(item['pack'], []).append((key, path))
-        report.append({'key': key, 'kind': item['kind'], 'pack': item['pack'], 'phonemes': ph, 'seconds': round(seconds, 2), 'file': path, 'clean': bool(clean), 'frame': int(frame)})
+        report.append({'key': key, 'kind': item['kind'], 'pack': item['pack'], 'phonemes': ph, 'seconds': round(seconds, 2), 'speed': speed, 'file': path, 'clean': bool(clean), 'frame': int(frame)})
         if (n + 1) % 50 == 0 or n + 1 == len(items):
             print(f'{n + 1} of {len(items)}', flush=True)
 
@@ -269,6 +300,7 @@ def main():
         json.dump(report, f, ensure_ascii=False, indent=1)
     seconds = sum(r['seconds'] for r in report)
     print(f'{len(report)} clips in {len(names)} packs, {seconds / 60:.1f} minutes of speech, {total / 1e6:.1f} MB')
+    print(f'  {sum(1 for r, i in zip(report, items) if r["speed"] != SPEED[i["kind"]])} were hurried and made again more slowly')
     print('  ' + ', '.join(f'{sum(1 for r in report if r["clean"] and r["frame"] == k)} cut from frame {k + 1}' for k in range(len(FRAMES)))
           + f', {sum(1 for r in report if not r["clean"])} cut by the clock')
 

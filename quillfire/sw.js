@@ -8,7 +8,7 @@
 // megabytes and changes far less often than the code, so it is not fetched
 // again every time the game is updated.
 
-const VERSION = 'quillfire-3e1fc09bf9';
+const VERSION = 'quillfire-e20e542bfb';
 const ASSETS = [
   /* ASSETS:START */
   './',
@@ -42,7 +42,7 @@ const ASSETS = [
   'js/ui.js',
   /* ASSETS:END */
 ];
-const VOICE = 'quillfire-voice-9f45b5ee01';
+const VOICE = 'quillfire-voice-545941eeaf';
 const VOICE_FILES = [
   /* VOICE:START */
   'audio/index.json',
@@ -80,7 +80,7 @@ async function saveMissingVoice() {
   const cache = await caches.open(VOICE);
   for (const file of VOICE_FILES) {
     try {
-      if (await cache.match(file)) continue;
+      if (await cache.match(file, { ignoreVary: true })) continue;
       const response = await fetch(file);
       if (response.ok) await cache.put(file, response);
     } catch (error) {
@@ -136,7 +136,9 @@ async function networkFirst(request) {
     if (fresh && fresh.ok) cache.put(request, fresh.clone());
     return fresh;
   } catch (error) {
-    const saved = (await cache.match(request, { ignoreSearch: true })) || (request.mode === 'navigate' ? await cache.match('./') : null);
+    // (the host may serve one file in several forms, such as a picture as PNG or
+    // WebP; any saved form will do)
+    const saved = (await cache.match(request, { ignoreSearch: true, ignoreVary: true })) || (request.mode === 'navigate' ? await cache.match('./', { ignoreVary: true }) : null);
     if (saved) return saved;
     throw error;
   }
@@ -146,7 +148,7 @@ async function networkFirst(request) {
 // same, so the saved copy is used first and the network only when there is none.
 async function voiceFirst(request) {
   const cache = await caches.open(VOICE);
-  const saved = await cache.match(request, { ignoreSearch: true });
+  const saved = await cache.match(request, { ignoreSearch: true, ignoreVary: true });
   if (saved) return saved;
   const fresh = await fetch(request);
   if (fresh && fresh.ok) cache.put(request, fresh.clone());

@@ -26,6 +26,14 @@ export const bare = (w) => w.toLowerCase().replace(/[.,!?“”"]/g, '');
 const an = (w) => (/^[aeiou]/i.test(w) ? 'an' : 'a');
 const list = (words) => (words.length < 2 ? words.join('') : words.slice(0, -1).join(', ') + ' and ' + words[words.length - 1]);
 const fill = (sentence, word) => sentence.replace('___', word);
+// The sentence as Blip reads it aloud. The gap is said as "blank", with a
+// comma on each side so that it does not run into the next word ("blank it").
+const gapSay = (sentence) => {
+  const [before, after] = sentence.split('___');
+  const lead = before.trim().replace(/,$/, '');
+  const rest = after.trim();
+  return (lead ? `${lead}, blank` : 'Blank') + (/^[.?!,]/.test(rest) || !rest ? rest : `, ${rest}`);
+};
 const plain = (text) => text.replace(/[[\]*]/g, '');
 
 const levels = (groups) => Object.keys(groups).flatMap((lv) => groups[lv].map((row) => [Number(lv), row]));
@@ -137,7 +145,7 @@ const prefixItems = [
 const suffixItems = [
   ...levels(SUFFIXES.build).map(([lv, [meaning, a, ...wrong]]) => pick('suffixes', lv, a, { ask: 'Which word means', text: meaning }, a, wrong, `“${cap(a)}” means ${meaning}.`)),
   ...SUFFIXES.compare.map(([s, a, ...wrong]) =>
-    pick('suffixes', 2, s, { ask: 'Which word fits?', text: s }, a, wrong, a.endsWith('est') ? `-est is for the most of all: “${fill(s, a)}”` : `-er compares two things: “${fill(s, a)}”`, s.replace('___', 'blank'))
+    pick('suffixes', 2, s, { ask: 'Which word fits?', text: s }, a, wrong, a.endsWith('est') ? `-est is for the most of all: “${fill(s, a)}”` : `-er compares two things: “${fill(s, a)}”`, gapSay(s))
   ),
   ...SUFFIXES.part.map(([q, a, ...wrong]) => pick('suffixes', /^-(ful|less)/.test(q) ? 1 : /^-(er|ly)/.test(q) ? 2 : 3, 'part:' + q, { ask: 'This ending means', big: q }, a, wrong, `The ending ${q.split(' ')[0]} means ${a}.`)),
 ];
@@ -173,7 +181,7 @@ const capitalItems = levels(CAPITALS).map(([lv, row]) => {
   return tap('capitals', lv, row.s, { ask: 'Tap every word that needs a capital letter' }, tokens, `Capitals go on ${list(up)}. The first word, names, days, months and the word “I” always get a capital.`);
 });
 
-const agreementItems = levels(AGREEMENT).map(([lv, [s, a, ...wrong]]) => pick('agreement', lv, s, { ask: 'Which word fits?', text: s }, a, wrong, `It sounds right this way: “${fill(s, a)}”`, s.replace('___', 'blank')));
+const agreementItems = levels(AGREEMENT).map(([lv, [s, a, ...wrong]]) => pick('agreement', lv, s, { ask: 'Which word fits?', text: s }, a, wrong, `It sounds right this way: “${fill(s, a)}”`, gapSay(s)));
 
 const PUNCT_WHY = {
   1: 'Commas go between the things in a list. One also goes between a city and its state, and between a day and its year.',
@@ -186,7 +194,7 @@ const punctuationItems = levels(PUNCTUATION).map(([lv, [a, ...wrong]]) =>
 
 const JOIN_WHY = { and: 'adds one more thing', but: 'shows a change or a surprise', or: 'gives a choice or a warning', so: 'tells what happened because of it', because: 'tells the reason' };
 const conjunctionItems = spread(CONJUNCTIONS).map(([lv, [s, a, ...wrong]]) =>
-  pick('conjunctions', lv, s, { ask: 'Which joining word fits?', text: s }, a, wrong, `“${cap(a)}” ${JOIN_WHY[a]}: “${fill(s, a)}”`, s.replace('___', 'blank'))
+  pick('conjunctions', lv, s, { ask: 'Which joining word fits?', text: s }, a, wrong, `“${cap(a)}” ${JOIN_WHY[a]}: “${fill(s, a)}”`, gapSay(s))
 );
 
 const orderItems = levels(ORDER).map(([lv, seq]) => order('order', lv, seq.join(' '), { ask: 'Zap the words in order to build a sentence' }, seq, `The sentence is: “${seq.join(' ')}”`));

@@ -39,7 +39,7 @@ SOUND_ALIKE = [
     {'gray', 'grey'}, {'ok', 'okay'}, {'mom', 'mum'}, {'cadet', 'kadet'},
     {'blip', 'blipp', 'blib'}, {"blip's", 'blips', "blipp's"}, {'mira', 'meera', 'mirra', 'mera'}, {'ana', 'anna', 'ahna', 'onna'},
     {'zed', 'zedd', 'zead'}, {'garble', 'garbel'}, {'garbler', 'garblar'}, {'garblers', 'garblars', "garbler's"},
-    {'quillfire', 'quilfire', 'quillfyre'}, {'nova', 'noah'}, {'e d', 'ed'},
+    {'quillfire', 'quilfire', 'quillfyre'}, {'nova', 'noah'}, {'ful', 'full'}, {'flier', 'flyer'},
 ]
 ALIKE = {}
 for group in SOUND_ALIKE:
