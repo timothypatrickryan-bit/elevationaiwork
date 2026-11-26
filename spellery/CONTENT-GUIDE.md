@@ -123,6 +123,18 @@ sort: {
 
 Leave `sort` out when there is no real decision to practice.
 
+## The voice
+
+Every word and sentence is spoken by a recording in `audio/`. After adding or
+changing words, make the recordings again (the README says how). A sentence is
+recorded exactly as written, so write it the way it should be said: spell out
+numbers ("twenty-six", not "26") and avoid abbreviations.
+
+If a word can be said two ways (the verb and the noun "excuse", "separate"),
+check which one the recording uses and fix it in the `SAY_ALONE` table of
+`tools/make-voice.py` so that the word on its own matches the word in its
+sentence.
+
 ## Before a shelf is done
 
 - The checker reports 0 errors, and you have read its warnings.

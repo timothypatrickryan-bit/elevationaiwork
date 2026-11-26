@@ -1,10 +1,10 @@
 // The workshop: the familiar, what to do next, and the shelves of jars.
 
 import { SHELVES } from '../content/index.js';
-import { S, starsOf, shelfOpen, shelfProgress, nextUnit, dueWords, rank, jarsFilled, JARS_TO_OPEN, playedToday } from '../store.js';
+import { S, change, starsOf, shelfOpen, shelfProgress, nextUnit, dueWords, rank, jarsFilled, JARS_TO_OPEN, playedToday, VOICE_CHECK } from '../store.js';
 import { jar, stars, icon } from '../art.js';
-import { sfx } from '../audio.js';
-import { mount, esc, topbar, tabs, tabHandlers, grownupsGate, toast, plural, pick } from '../ui.js';
+import { sfx, speechSupported } from '../audio.js';
+import { mount, esc, topbar, tabs, tabHandlers, grownupsGate, toast, plural, pick, ask } from '../ui.js';
 import { petHtml } from '../activities/parts.js';
 import { go } from '../nav.js';
 
@@ -116,4 +116,21 @@ export function open(app) {
     }
   );
   grownupsGate(screen);
+
+  // The first version of the sound check used the iPad's own speech voice,
+  // which stays silent on a muted iPad. Anyone who turned the voice off back
+  // then is offered the new check once; after that it lives on the Grown-ups page.
+  if (st.settings.speak !== true && st.settings.voiceCheck !== VOICE_CHECK && speechSupported()) {
+    change((save) => {
+      save.settings.voiceCheck = VOICE_CHECK;
+    });
+    ask({
+      title: 'New: a voice for the words',
+      body: 'The game can now say each word out loud, even when the iPad is on silent. Shall we check that you can hear it?',
+      yes: 'Check the sound',
+      no: 'Not now',
+    }).then((yes) => {
+      if (yes) go('welcome', { resume: 'sound' });
+    });
+  }
 }

@@ -3,7 +3,8 @@
 import { loadSave, S } from './store.js';
 import { setRouter } from './nav.js';
 import { closeLayers } from './ui.js';
-import { stopSpeaking, primeVoice, wakeVoice } from './audio.js';
+import { stopSpeaking, unlockAudio, wakeVoice, loadVoice, prepareVoice, resetVoice } from './audio.js';
+import { UI_LINES } from './voice-lines.js';
 import * as welcome from './screens/welcome.js';
 import * as home from './screens/home.js';
 import * as unit from './screens/unit.js';
@@ -41,11 +42,15 @@ function show(name, params) {
 function start() {
   loadSave();
   setRouter(show);
+  // have the recorded voice ready before it is first needed
+  loadVoice();
+  prepareVoice([UI_LINES.hello]);
   show(S().profile.welcomed ? 'home' : 'welcome');
 }
 
-// The first tap after opening lets the voice speak later on (see audio.js).
-document.addEventListener('click', primeVoice, true);
+// The first tap after opening lets the game make sound from then on (see audio.js).
+document.addEventListener('touchend', unlockAudio, true);
+document.addEventListener('click', unlockAudio, true);
 
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) stopSpeaking();
@@ -58,6 +63,19 @@ else start();
 // Offline support, only when the game is served as its own site.
 if ('serviceWorker' in navigator && window.top === window.self && /^https?:$/.test(window.location.protocol)) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker
+      .register('sw.js')
+      .then(() => navigator.serviceWorker.ready)
+      // Once the game is running, have the recorded voice saved for offline use.
+      .then((registration) => registration.active && registration.active.postMessage({ type: 'save-voice' }))
+      .catch(() => {});
+  });
+  // A new version of the game has taken over. Its recordings may differ, and
+  // it has not been asked to save them yet (the request above went to the
+  // version it replaced).
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    resetVoice();
+    const worker = navigator.serviceWorker.controller;
+    if (worker) worker.postMessage({ type: 'save-voice' });
   });
 }

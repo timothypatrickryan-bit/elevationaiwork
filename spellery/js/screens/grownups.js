@@ -2,11 +2,12 @@
 // backup and reset. Everything shown is worked out from the save on this device.
 
 import { SHELVES, UNITS, WORDS, TOTAL_UNITS, TOTAL_WORDS, findUnit, wordsOf } from '../content/index.js';
-import { S, change, canSave, dayKey, streakNow, jarsFilled, masteredCount, metCount, starsOf, shelfProgress, troubleWords, glowOf, MASTERED_BOX, exportCode, importCode, resetAll } from '../store.js';
+import { S, change, canSave, dayKey, streakNow, jarsFilled, masteredCount, metCount, starsOf, shelfProgress, troubleWords, glowOf, MASTERED_BOX, VOICE_CHECK, exportCode, importCode, resetAll } from '../store.js';
 import { icon, stars } from '../art.js';
 import { sfx, speak, speechSupported } from '../audio.js';
 import { mount, esc, rich, topbar, toast, ask, shortDate, plural } from '../ui.js';
 import { pretty } from '../words.js';
+import { UI_LINES } from '../voice-lines.js';
 import { go } from '../nav.js';
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -196,15 +197,15 @@ export function open(app) {
       const key = target.dataset.key;
       change((s) => {
         s.settings[key] = key === 'speak' ? s.settings.speak !== true : !s.settings[key];
+        if (key === 'speak') s.settings.voiceCheck = VOICE_CHECK; // a grown-up has decided; no need to offer the check again
       });
       target.setAttribute('aria-checked', S().settings[key] === true ? 'true' : 'false');
       el.querySelector('#backup-code').value = exportCode();
       sfx('pick');
     },
-    // Speaks inside the tap itself, which is what an iPad needs.
     'test-voice'() {
-      speak([{ text: 'This is how the words will sound. For example: because.', rate: 0.9 }]).then((result) => {
-        if (result === 'silent') toast('No sound came out. Check the volume, then try again.', 'cross');
+      speak([{ text: UI_LINES.test, rate: 0.9 }]).then((result) => {
+        if (result === 'silent') toast('No sound could be played. Check the volume, then try again.', 'cross');
       });
     },
     shelf(target) {
@@ -301,8 +302,8 @@ export function open(app) {
 
       <h2 class="section-title">Settings</h2>
       <div class="box">
-        ${switchRow('speak', 'Say the words out loud', voice ? 'The game says each word and it is spelled from sound. With this off, each word is shown for a moment instead, which is weaker practice.' : 'This device has no voice the game can use, so each word is shown for a moment instead.', voice)}
-        ${voice ? `<div class="setting"><div class="setting-text"><b>Test the voice</b><span>If nothing is heard, check the volume and that the iPad is not muted.</span></div><button class="btn btn-soft" data-act="test-voice">${icon('speaker')} Play</button></div>` : ''}
+        ${switchRow('speak', 'Say the words out loud', voice ? 'A recorded voice says each word and it is spelled from sound. With this off, each word is shown for a moment instead, which is weaker practice.' : 'This device cannot play the game’s voice, so each word is shown for a moment instead.', voice)}
+        ${voice ? `<div class="setting"><div class="setting-text"><b>Test the voice</b><span>The voice plays like a video does, so it is heard even when the iPad is on silent. If nothing is heard, turn the volume up.</span></div><button class="btn btn-soft" data-act="test-voice">${icon('speaker')} Play</button></div>` : ''}
         ${switchRow('sound', 'Sound effects', 'Chimes for right answers, a silly slide for a fizzle.')}
         <div class="setting"><div class="setting-text"><b>Starting shelf</b><span>Set by the first-day check. New jars are suggested from this shelf on, and every shelf before it is open.</span></div>
           <div class="stepper"><button class="icon-btn" data-act="shelf" data-step="-1" aria-label="Earlier shelf"${st.start <= 0 ? ' disabled' : ''}>${icon('minus')}</button>
@@ -332,7 +333,7 @@ export function open(app) {
         <p><b>A jar</b> is one spelling pattern with ten words. It opens with a five-word quick check. Four or five right fills the jar on the spot, so no time goes on what is already known. Otherwise the game teaches the rule, plays a short card game with it, builds six of the words with help, and then asks for those six from memory.</p>
         <p><b>A miss is never the end of a word.</b> After a wrong try, the letters that were right are kept as a hint for a second try. After a second miss the word is shown with its tricky part colored, then hidden, and written from memory. Every word ends with a correct spelling, and the familiar’s silly mishaps keep mistakes light.</p>
         <p><b>Reviews</b> bring words back after one day, then three, seven, fourteen and thirty. A miss sends a word back to the start. Spelling a word correctly after a gap is what moves it into long-term memory, so reviews matter as much as new jars. Mastered words also turn up in a short proofreading round, where one word in a sentence has to be found and fixed.</p>
-        <p><b>The voice</b> is the iPad’s own. Spelling from a spoken word is the practice that carries over to writing, so keep it on if you can. With it off, the game shows each word briefly instead and skips the quick checks.</p>
+        <p><b>The voice</b> is a set of recordings that come with the game, so it sounds the same on every device and works offline. It is computer-made speech; each recording was checked by machine, but if a word ever sounds wrong, the Sentence button gives it in context. Spelling from a spoken word is the practice that carries over to writing, so keep the voice on if you can. With it off, the game shows each word briefly instead and skips the quick checks.</p>
         <p><b>The keyboard</b> is the game’s own, so autocorrect and word suggestions cannot help. There are ${TOTAL_WORDS} words in ${TOTAL_UNITS} jars on ${SHELVES.length} shelves, running from short-vowel endings to rule breakers and sound-alikes.</p>
       </div>
 

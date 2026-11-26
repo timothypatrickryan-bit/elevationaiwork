@@ -1,19 +1,24 @@
 // First launch: meet the familiar, choose names, check the voice can be heard,
 // then a short spelling check to find the right shelf to start on.
+//
+// The workshop can also send her back here later (params.resume = 'sound'), to
+// take the sound check again when the voice was off.
 
 import { SHELVES, WORDS, PLACEMENT } from '../content/index.js';
-import { S, change, placeFrom } from '../store.js';
+import { S, change, placeFrom, jarsFilled, VOICE_CHECK } from '../store.js';
 import { pet, jar, icon } from '../art.js';
-import { sfx, speak, speechSupported, speechOn, stopSpeaking } from '../audio.js';
+import { sfx, speak, speechSupported, speechOn, stopSpeaking, prepareVoice } from '../audio.js';
+import { UI_LINES } from '../voice-lines.js';
 import { mount, esc } from '../ui.js';
 import { createSession } from '../session.js';
 import { dictation } from '../activities/dictation.js';
 import { petHtml } from '../activities/parts.js';
 import { go } from '../nav.js';
 
-export function open(app) {
-  let step = 0;
-  let sound = 'idle'; // idle | talking | ask | silent | none
+export function open(app, params = {}) {
+  const again = params.resume === 'sound'; // she has been welcomed before; only the sound check is wanted
+  let step = again ? 2 : 0;
+  let sound = speechSupported() ? 'idle' : 'none'; // idle | talking | ask | silent | none
   let session = null;
   let left = false;
   let finished = false;
@@ -39,8 +44,9 @@ export function open(app) {
         <button class="btn btn-main btn-big" data-act="names">Next</button>`;
     }
     // step 2: the sound check
+    const look = S().look;
     const head = `
-      <div class="welcome-pet is-small">${pet({ mood: sound === 'talking' ? 'cheer' : 'smile', cls: 'is-bob' })}</div>
+      <div class="welcome-pet is-small">${pet({ color: look.color, wear: look.wear, mood: sound === 'talking' ? 'cheer' : 'smile', cls: 'is-bob' })}</div>
       <h1 class="display">Sound check</h1>`;
     if (sound === 'idle' || sound === 'talking') {
       return `${head}
@@ -49,7 +55,7 @@ export function open(app) {
     }
     if (sound === 'ask') {
       return `${head}
-        <p class="welcome-text">Did you hear ${esc(petName())} say hello?</p>
+        <p class="welcome-text">Did you hear a voice say hello?</p>
         <div class="welcome-choice">
           <button class="btn btn-main btn-big" data-act="heard">Yes, I heard it</button>
           <button class="btn btn-ghost" data-act="test">${icon('again')} Play it again</button>
@@ -57,7 +63,7 @@ export function open(app) {
         </div>`;
     }
     return `${head}
-      <p class="welcome-text">${sound === 'none' ? 'This device has no voice the game can use.' : 'No sound came out. Check that the volume is up, then try once more.'} If it stays quiet you can still play: ${esc(petName())} will show you each word for a moment instead of saying it.</p>
+      <p class="welcome-text">${sound === 'none' ? 'This device cannot play the game’s voice.' : 'No sound? Turn the volume up with the buttons on the edge of the iPad, then try again.'} If it stays quiet you can still play: ${esc(petName())} will show you each word for a moment instead of saying it.</p>
       <div class="welcome-choice">
         ${sound === 'none' ? '' : `<button class="btn btn-main btn-big" data-act="test">${icon('again')} Try again</button>`}
         <button class="btn ${sound === 'none' ? 'btn-main btn-big' : 'btn-ghost'}" data-act="novoice">Play without the voice</button>
@@ -79,16 +85,13 @@ export function open(app) {
         st.profile.pet = name || 'Fizz';
       });
       step = 2;
-      sound = speechSupported() ? 'idle' : 'none';
       paint();
     },
-    // Has to speak inside the tap itself, or an iPad stays silent.
     test() {
       sound = 'talking';
       paint();
-      const who = S().profile.name;
-      speak([{ text: `Hello${who ? ', ' + who : ''}! I am ${petName()}. Can you hear me?`, rate: 0.95 }]).then((result) => {
-        if (left || step !== 2) return;
+      speak([{ text: UI_LINES.hello, rate: 0.95 }]).then((result) => {
+        if (left || step !== 2 || result === 'stopped') return;
         sound = result === 'spoken' ? 'ask' : 'silent';
         paint();
       });
@@ -97,7 +100,10 @@ export function open(app) {
       sfx('right');
       change((st) => {
         st.settings.speak = true;
+        st.settings.voiceCheck = VOICE_CHECK;
       });
+      // Back from the workshop: only look for a starting shelf if she never had the chance.
+      if (again && (S().profile.placed || jarsFilled() > 0)) return go('home');
       placement();
     },
     unheard() {
@@ -111,7 +117,9 @@ export function open(app) {
       stopSpeaking();
       change((st) => {
         st.settings.speak = false;
+        st.settings.voiceCheck = VOICE_CHECK;
       });
+      if (again) return go('home');
       finish(0, false);
     },
   });
@@ -123,12 +131,13 @@ export function open(app) {
   // ---- the placement check: two words per shelf, stopping at the first miss
   async function placement() {
     if (!speechOn()) return finish(0, false);
+    prepareVoice(PLACEMENT.reduce((all, pair) => all.concat(pair), []));
     screen.remove();
     session = createSession(app, {
       title: 'Finding your shelf',
       sub: 'The Spellery',
       hue: 'violet',
-      onExit: () => (finished ? enter() : finish(placeFrom([]), false)),
+      onExit: () => (finished ? enter() : finish(placeFrom([]), false, true)),
       leave: { title: 'Skip the rest?', body: 'You will start at the first shelf. A grown-up can change that later.', yes: 'Skip', no: 'Keep going' },
     });
     session.progress('Before we start', 0, 0);
@@ -137,7 +146,7 @@ export function open(app) {
         <p class="bubble">Let me find the right shelf for you. I will say a word and you spell it, one try each. The words get harder as we go, and missing one is fine. It just tells me where to begin.</p></div>
       <button class="btn btn-main btn-big" data-go="go">Start</button>
       <button class="btn btn-ghost" data-go="skip">Skip this and start at the beginning</button>`);
-    if (choice === 'skip') return finish(placeFrom([]), false);
+    if (choice === 'skip') return finish(placeFrom([]), false, true);
     session.guard(true);
     const results = [];
     let asked = 0;
@@ -151,12 +160,18 @@ export function open(app) {
       results.push(right);
       if (right < PLACEMENT[i].length) break;
     }
-    finish(placeFrom(results), true);
+    finish(placeFrom(results), true, true);
   }
 
-  async function finish(start, placed) {
+  // placed: the check was taken. settled: it was taken or turned down, so it is not offered again.
+  async function finish(start, placed, settled = false) {
     if (left) return;
     finished = true;
+    if (settled) {
+      change((st) => {
+        st.profile.placed = true;
+      });
+    }
     if (!session) {
       screen.remove();
       session = createSession(app, { title: 'All set', sub: 'The Spellery', hue: 'violet', onExit: () => enter() });

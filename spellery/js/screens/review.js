@@ -5,7 +5,7 @@
 import { WORDS } from '../content/index.js';
 import { S, dueWords, finishReview, nextUnit, MASTERED_BOX } from '../store.js';
 import { icon } from '../art.js';
-import { sfx, speechOn } from '../audio.js';
+import { sfx, speechOn, prepareVoice } from '../audio.js';
 import { esc, shuffle, plural, burstFrom } from '../ui.js';
 import { createSession } from '../session.js';
 import { dictation } from '../activities/dictation.js';
@@ -22,6 +22,7 @@ export function open(app) {
   const due = dueWords();
   if (!due.length) return go('home');
   const picked = shuffle(due.slice(0, REVIEW_SIZE));
+  prepareVoice(picked.map((w) => w.key));
   const started = Date.now();
   let left = false;
 

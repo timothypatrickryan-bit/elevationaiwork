@@ -10,7 +10,7 @@
 import { findUnit, wordsOf } from '../content/index.js';
 import { S, starsOf, unitDone, wasChecked, noteChecked, finishUnit, nextUnit, glowOf } from '../store.js';
 import { jar, stars, icon, badgeArt } from '../art.js';
-import { sfx, speechOn } from '../audio.js';
+import { sfx, speechOn, prepareVoice } from '../audio.js';
 import { esc, rich, shuffle, plural, burstFrom } from '../ui.js';
 import { pretty } from '../words.js';
 import { createSession } from '../session.js';
@@ -69,6 +69,7 @@ export function open(app, params) {
   if (!found) return go('home');
   const { unit, shelf, shelfIndex } = found;
   const words = wordsOf(unit);
+  prepareVoice(words.map((w) => w.key));
   const started = Date.now();
   let left = false;
 

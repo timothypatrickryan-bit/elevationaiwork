@@ -58,11 +58,14 @@ has to find and fix it.
 **The keyboard** is the game's own, so the iPad's autocorrect and word
 suggestions cannot help.
 
-**The voice** is the iPad's built-in one. The first screen includes a sound
-check ("Did you hear me?"). If there is no voice, or she taps "Can't hear?",
-the game shows each word for a moment instead of saying it and skips the quick
-checks. That mode works, but spelling from a spoken word is the stronger
-practice.
+**The voice** is a set of recordings that ship with the game: every word, a
+slow version of every word, and every sentence. They play the way a video
+does, so they are heard even when the iPad is on silent, and they work offline.
+The recordings are computer-made speech (see Credits). The first screen
+includes a sound check ("Did you hear a voice say hello?"). If she taps "Can't
+hear?", the game shows each word for a moment instead of saying it and skips
+the quick checks. That mode works, but spelling from a spoken word is the
+stronger practice.
 
 **Sparks and badges.** Words spelled right earn sparks, which buy colors and
 things to wear for the familiar. There are fifteen badges.
@@ -101,8 +104,8 @@ Things worth knowing:
   the iPad.
 - When the files change on the host, the iPad picks up the new version the next
   time the game is opened with a connection.
-- If the words are not spoken, check the volume and the mute setting first,
-  then Grown-ups → Test the voice.
+- If the words are not heard, turn the volume up, then use Grown-ups → Test
+  the voice. Silent mode does not matter: the voice plays like a video.
 
 ## Trying it on a computer
 
@@ -127,13 +130,15 @@ js/main.js              starts the game and switches screens
 js/store.js             saved progress and all the rules: review dates, stars, sparks, unlocking, badges
 js/words.js             word markup, and lining up a wrong spelling with the right one
 js/audio.js             sound effects and the voice
+js/voice-lines.js       the few spoken lines that are not words or sentences from the lists
+audio/                  the recorded voice: one file per jar, plus index.json
 js/art.js               every drawing: the familiar, jars, icons
 js/keyboard.js          the on-screen keyboard
 js/session.js           the frame around a run of activities
 js/activities/          hear-and-spell, fill in, unscramble, join, rule cards, proofreading
 js/screens/             one file per screen
 js/content/             the word lists, one file per shelf
-tools/                  checkers (need Node 18 or later)
+tools/                  checkers (need Node 18 or later) and the voice-recording scripts (Python)
 CONTENT-GUIDE.md        how to write or change a shelf of words
 ```
 
@@ -155,8 +160,39 @@ listed misspelling and every sentence against a word list (one word per line).
 Changing a word's spelling in a shelf file starts that word's progress again,
 because progress is stored under the word itself. Unit ids must never change.
 
+### The recorded voice
+
+A new or changed word or sentence has no recording until the voice is made
+again. Until then the game says it with the device's own speech voice instead
+(which is silent on a muted iPad), so it is worth redoing:
+
+```bash
+node tools/voice-list.mjs > /tmp/voice-list.json     # everything the voice has to say
+python tools/make-voice.py /tmp/voice-list.json      # makes audio/ (about an hour on a laptop)
+python tools/check-voice.py voice-work               # listens to every clip and reports doubtful ones
+node tools/update-offline-list.mjs
+```
+
+`make-voice.py` needs Python 3.12, `pip install kokoro==0.9.4 soundfile`,
+`python -m spacy download en_core_web_sm` and ffmpeg. (The version is pinned
+because the script sets the length of single sounds, which newer versions of
+that package may do differently.) `check-voice.py` also needs `pip install
+faster-whisper transformers`. Finished clips are kept in `voice-work/` between
+runs, so only what changed is made again. How a word is pronounced can be
+corrected in the `SAY_ALONE` table at the top of `make-voice.py`.
+
+Each clip is spoken in the middle of a longer line ("Spell this word: ... Next
+word.") and then cut out of it, because the speech model adds a small noise
+before the first sound and after the last sound of whatever it says.
+`make-voice.py` ends by saying how many clips it could cut cleanly; any that it
+"cut by the clock" should be listened to.
+
 ## Credits
 
 The word lists, rules, sentences, drawings and code were written for this
 project. The typefaces (Caprasimo and Atkinson Hyperlegible Next) are used
 under the SIL Open Font License.
+
+The voice is synthetic speech made with the open
+[Kokoro](https://huggingface.co/hexgrad/Kokoro-82M) text-to-speech model
+(Apache 2.0 licence), voice `af_heart`. No person was recorded.

@@ -11,9 +11,12 @@ const HOUR = 60 * 60 * 1000;
 function fresh() {
   return {
     v: 1,
-    profile: { name: '', pet: 'Fizz', created: Date.now(), welcomed: false },
-    // speak: null until the sound check has been done, then true or false
-    settings: { sound: true, speak: null, unlockAll: false },
+    // placed: the starting-shelf check has been taken or turned down
+    profile: { name: '', pet: 'Fizz', created: Date.now(), welcomed: false, placed: false },
+    // speak: null until the sound check has been done, then true or false.
+    // voiceCheck: which version of the sound check was last answered; a save
+    // that turned the voice off under an older check is offered the new one once.
+    settings: { sound: true, speak: null, unlockAll: false, voiceCheck: 0 },
     start: 0, // the shelf the placement check chose
     look: { color: 'pink', wear: [] },
     owned: ['pink'],
@@ -63,6 +66,7 @@ export function save() {
 }
 
 export const S = () => state;
+export const VOICE_CHECK = 2; // the sound check that plays recordings
 export const canSave = () => storageWorks;
 
 export function change(fn) {
