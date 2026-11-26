@@ -45,12 +45,14 @@ Any other static host works too (Cloudflare Pages, Netlify, S3) — just serve `
 
 ## Also in this repo
 
-Two separate, self-contained games for the iPad live here as well. Neither is
+Three separate, self-contained games for the iPad live here as well. None is
 part of the landing page or published by `render.yaml`; each README explains
 how to host it.
 
 - [`lantern-library/`](lantern-library/README.md): a reading-comprehension game.
 - [`spellery/`](spellery/README.md): a spelling game.
+- [`quillfire/`](quillfire/README.md): a starship battle game that teaches
+  English language arts.
 
 ## Open items before going live
 
