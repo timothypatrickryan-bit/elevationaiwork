@@ -43,6 +43,17 @@ endpoint is down, the form falls back to a pre-filled mailto.
 
 Any other static host works too (Cloudflare Pages, Netlify, S3) — just serve `site/`.
 
+## Also in this repo
+
+Three separate, self-contained games for the iPad live here as well. None is
+part of the landing page or published by `render.yaml`; each README explains
+how to host it.
+
+- [`lantern-library/`](lantern-library/README.md): a reading-comprehension game.
+- [`spellery/`](spellery/README.md): a spelling game.
+- [`quillfire/`](quillfire/README.md): a starship battle game that teaches
+  English language arts.
+
 ## Open items before going live
 
 - [x] `hello@elevationaiwork.com` forwards via Cloudflare Email Routing → timothy.patrick.ryan@gmail.com.
